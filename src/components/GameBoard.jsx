@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const initialGameBoard = [
     [null, null, null], // 1st row
@@ -6,23 +6,32 @@ const initialGameBoard = [
     [null, null, null], // 3rd row
 ];
 
-const GameBoard = ({ onSelectSquare, activePlayerSymbol }) => {
-    const [gameBoard, setGameBoard] = useState(initialGameBoard);
+const GameBoard = ({ onSelectSquare, turns }) => {
+    let gameBoard = initialGameBoard;
 
-    function handleSelectSquare(rowIndex, colIndex) {
-        setGameBoard((prevGameBoard) => {
-            {
-                /* Create a brand new copy array */
-            }
-            const updatedBoard = [
-                ...prevGameBoard.map((innerArray) => [...innerArray]),
-            ];
-            updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
-            return updatedBoard;
-        });
+    for (const turn of turns) {
+        const { square, player } = turn;
+        const { row, col } = square;
 
-        onSelectSquare();
+        gameBoard[row][col] = player;
     }
+
+    // const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+    // function handleSelectSquare(rowIndex, colIndex) {
+    //   setGameBoard((prevGameBoard) => {
+    //      {
+    //         /* Create a brand new copy array */
+    //     }
+    //     const updatedBoard = [
+    //         ...prevGameBoard.map((innerArray) => [...innerArray]),
+    //     ];
+    //     updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
+    //     return updatedBoard;
+    //  });
+
+    //   onSelectSquare();
+    // }
 
     return (
         <ol id="game-board">
@@ -35,7 +44,7 @@ const GameBoard = ({ onSelectSquare, activePlayerSymbol }) => {
                             <li key={colIndex}>
                                 <button
                                     onClick={() =>
-                                        handleSelectSquare(rowIndex, colIndex)
+                                        onSelectSquare(rowIndex, colIndex)
                                     }
                                 >
                                     {playerSymbol}
